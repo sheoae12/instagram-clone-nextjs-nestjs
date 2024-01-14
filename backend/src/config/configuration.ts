@@ -14,5 +14,21 @@ export default () => ({
         host: process.env.REDIS_HOST || '127.0.0.1',
         port: parseInt(process.env.REDIS_PORT as string, 10) || 6379,
         ttl: process.env.REDIS_DEFAULT_TTL || 3600
+    },
+    jwt: {
+        secret: process.env.JWT_SECRET
+    },
+    firebase: {
+        type: process.env.FIREBASE_TYPE || 'service_account',
+        projectId: process.env.FIREBASE_PROJECT_ID,
+        clientId: process.env.FIREBASE_CLIENT_ID,
+        clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+        privateKeyId: process.env.FIREBASE_PRIVATE_KEY_ID,
+        privateKey: process.env.FIREBASE_PRIVATE_KEY,
+        authUri: process.env.FIREBASE_AUTH_URI,
+        tokenUri: process.env.FIREBASE_TOKEN_URI,
+        authCertUrl: process.env.FIREBASE_AUTH_CERT_URL,
+        clientCertUrl: process.env.FIREBASE_CLIENT_CERT_URL,
+        universeDomain: process.env.FIREBASE_UNIVERSE_DOMAIN
     }
 });

@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import Redis from 'ioredis';
-import { getCurrentDate, getFormattedDate } from 'src/common/util/util';
+import { getCurrentDate, getFormattedDate } from 'src/common/util/date';
 
 @Injectable()
 export class RedisService {

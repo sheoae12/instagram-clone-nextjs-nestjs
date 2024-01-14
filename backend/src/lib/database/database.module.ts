@@ -12,7 +12,7 @@ import { AppDataSource, DataSourceConfig } from './datasource';
                 const configs = DataSourceConfig(configService);
                 return {
                     ...configs,
-                    synchronize: true
+                    synchronize: false
                 };
             }
         })
