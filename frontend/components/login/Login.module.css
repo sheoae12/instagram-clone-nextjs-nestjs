@@ -1,0 +1,77 @@
+.login_root {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.login_wrapper {
+    margin-top: 70px;
+    display: flex;
+    justify-content: center;
+}
+
+.login_instagram_img {
+    margin-right: 40px;
+    width: 300px;
+    height: 600px;
+}
+
+
+.box_container {
+    border: 1px solid gray;
+    padding: 40px 50px 40px 50px;
+
+    /* height: 400px; */
+    height: 500px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.box_logo_font {
+    width: 175px;
+    height: auto;
+    margin-bottom: 20px;
+}
+
+.login_input_wrapper {
+    width: 260px;
+    height: 42px;
+    margin-bottom: 10px;
+    padding: 3px 10px;
+    background-color: #5a5b5c;
+}
+
+.login_input_placeholder {
+    font-size: 12px;
+}
+
+.login_input {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background: transparent;
+    outline: none;
+    font-size: 15px;
+    margin-bottom: 10px;
+    color: white;
+}
+
+.login_button {
+    width: 100%;
+    height: 42px;
+
+    font-size: 15px;
+
+    border: none;
+    background-color: #4c9be0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

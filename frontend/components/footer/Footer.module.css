@@ -1,0 +1,29 @@
+.footer {
+    width: 800px;
+    font-size: 14px;
+    color: gray;
+
+    margin-top: 50px;
+}
+
+.footer_links {
+    display: flex;
+    justify-content: space-between;
+}
+
+.footer_links span {
+    cursor: pointer;
+    
+}
+
+.footer_links span:hover{
+    text-decoration:underline;
+}
+
+.footer_copyright {
+    width: 100%;
+    margin-top: 20px;
+
+    display: flex;
+    justify-content: center;
+}
