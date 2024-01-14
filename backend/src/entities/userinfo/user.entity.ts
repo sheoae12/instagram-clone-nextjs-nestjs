@@ -10,7 +10,7 @@ import { FeedResourceGroup } from '../feed/feed-resource-group.entity';
 import { Profile } from './profile.entity';
 import { Bookmark } from '../bookmark/bookmark.entity';
 import { BookmarkGroup } from '../bookmark/bookmark-group.entity';
-import { getCurrentDate } from 'src/common/util/util';
+import { getCurrentDate } from 'src/common/util/date';
 import { LoginHistory } from '../history/login-history.entity';
 import { Like } from '../base/like.entity';
 import { Comment } from '../base/comment.entity';

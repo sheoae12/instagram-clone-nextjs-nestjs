@@ -7,7 +7,7 @@ import {
 } from 'typeorm';
 import { BookmarkGroup } from './bookmark-group.entity';
 import { User } from '../userinfo/user.entity';
-import { getCurrentDate } from 'src/common/util/util';
+import { getCurrentDate } from 'src/common/util/date';
 
 @Entity({ name: 'bookmark' })
 export class Bookmark {

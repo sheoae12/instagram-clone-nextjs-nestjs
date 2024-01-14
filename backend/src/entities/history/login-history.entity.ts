@@ -7,7 +7,7 @@ import {
 } from 'typeorm';
 import { User } from '../userinfo/user.entity';
 import { Application } from '../enum/application.enum';
-import { getCurrentDate } from 'src/common/util/util';
+import { getCurrentDate } from 'src/common/util/date';
 
 @Entity({ name: 'login_history' })
 export class LoginHistory {

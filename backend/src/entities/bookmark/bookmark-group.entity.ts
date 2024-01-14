@@ -7,7 +7,7 @@ import {
     PrimaryGeneratedColumn
 } from 'typeorm';
 import { User } from '../userinfo/user.entity';
-import { getCurrentDate } from 'src/common/util/util';
+import { getCurrentDate } from 'src/common/util/date';
 import { Bookmark } from './bookmark.entity';
 
 @Entity({ name: 'bookmark_group' })

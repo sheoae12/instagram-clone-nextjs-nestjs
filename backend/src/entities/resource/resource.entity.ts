@@ -1,6 +1,6 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { FileType } from '../enum/filetype.enum';
-import { getCurrentDate } from 'src/common/util/util';
+import { getCurrentDate } from 'src/common/util/date';
 
 @Entity({ name: 'resource' })
 export class Resource {

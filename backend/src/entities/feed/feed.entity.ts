@@ -10,7 +10,7 @@ import { User } from '../userinfo/user.entity';
 import { FeedResourceGroup } from './feed-resource-group.entity';
 import { FeedLike } from './feed-like.entity';
 import { FeedComment } from './feed-comment.entity';
-import { getCurrentDate } from 'src/common/util/util';
+import { getCurrentDate } from 'src/common/util/date';
 
 @Entity({ name: 'feed' })
 export class Feed {
