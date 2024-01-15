@@ -19,6 +19,7 @@
     "noFallthroughCasesInSwitch": false,
     "strict": true,
     "strictPropertyInitialization": false,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
   }
 }
