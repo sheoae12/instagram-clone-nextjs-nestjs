@@ -14,7 +14,6 @@ import { getCurrentDate } from 'src/common/util/date';
 import { LoginHistory } from '../history/login-history.entity';
 import { Like } from '../base/like.entity';
 import { Comment } from '../base/comment.entity';
-import { v4 as uuidv4 } from 'uuid';
 
 @Entity({ name: 'user' })
 export class User {
@@ -22,19 +21,22 @@ export class User {
     id: number;
 
     @Column({ name: 'user_id', type: 'uuid', unique: true })
-    userId: string = uuidv4();
+    userId: string;
 
-    @Column({ name: 'account', type: 'varchar', length: 15 })
+    @Column({ name: 'firebase_uid', type: 'varchar', length: 128 })
+    firebaseUid: string;
+
+    @Column({ name: 'account', type: 'varchar', length: 64 })
     account: string;
 
-    @Column({ name: 'nickname', type: 'varchar', length: 15 })
+    @Column({ name: 'phone_number', type: 'varchar', length: 64, nullable: true })
+    phoneNumber: string | null;
+
+    @Column({ name: 'name', type: 'varchar', length: 50, comment: '이름' })
+    name: string;
+
+    @Column({ name: 'nickname', type: 'varchar', length: 15, comment: '유저이름' })
     nickname: string;
-
-    @Column({ name: 'mail', type: 'varchar', length: 64 })
-    mail: string;
-
-    @Column({ name: 'tel', type: 'varchar', length: 15 })
-    tel: string;
 
     @Column({ name: 'created_at', type: 'timestamp' })
     createdAt: Date = getCurrentDate();
