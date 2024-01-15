@@ -1,13 +1,14 @@
 import { BadRequestException, ConflictException, Injectable, InternalServerErrorException, Logger, NotFoundException } from "@nestjs/common";
 import { UserRepository } from "src/repositories/user.repository";
-import { SignInDto } from "./dto/sign-in.dto";
+import { SignInDto } from "./dto/req/sign-in.dto";
 import { FirebaseService } from "src/lib/firebase/firebase.service";
-import { SignUpDto } from "./dto/sign-up.dto";
+import { SignUpDto } from "./dto/req/sign-up.dto";
 import { plainToClass, plainToInstance } from "class-transformer";
 import { FirebaseUser } from "src/lib/firebase/firebase.service";
 import { isEmail } from "src/common/util/regex";
 import { genRandomId } from "src/common/util/auth";
 import { User } from "src/entities/userinfo/user.entity";
+import { JwtService } from "@nestjs/jwt";
 
 @Injectable()
 export class AuthService {
@@ -15,7 +16,8 @@ export class AuthService {
 
     constructor(
         private readonly userRepository: UserRepository,
-        private readonly firebaseService: FirebaseService
+        private readonly firebaseService: FirebaseService,
+        private readonly jwtService: JwtService
     ) {}
 
     async signIn(payload: SignInDto) {
@@ -31,8 +33,11 @@ export class AuthService {
             payload.password
         );
 
-        const result = await this.userRepository.getUserInfoByAccount(userCredential.user.email as string);
-        return result;
+        const userInfo = await this.userRepository.getUserInfoByAccount(userCredential.user.email as string);
+        const token = this.jwtService.sign({ ...userInfo });
+        const refreshToken = this.jwtService.sign({ auth: token });
+
+        return { userInfo, token, refreshToken };
     }
 
     async facebookSignIn(payload: any) {}
@@ -85,6 +90,18 @@ export class AuthService {
     }
 
     async deleteUser(userId: any) {
-        await this.userRepository.delete(userId);
+        try {
+            await this.userRepository.delete(userId);
+            return 'true';
+        } catch (error) {
+            this.logger.error(`[deleteUser] user deletion error`);
+            throw new InternalServerErrorException('deleteUser error');
+        }
+        
+    }
+
+    async testJwt(text: string) {
+        const jwt = this.jwtService.sign({text});
+        return jwt;
     }
 }

@@ -7,11 +7,10 @@ import { HttpModule } from '@nestjs/axios';
 import { DatabaseModule } from './lib/database/database.module';
 import { RedisModule } from './lib/cache/redis.module';
 import { AuthModule } from './modules/auth/auth.module';
-import { JwtModule } from '@nestjs/jwt';
-import { JwtConfig } from './config/jwt.config';
 import { APP_FILTER } from '@nestjs/core';
 import { HttpExceptionFilter } from './common/exception-filters/http-exception.filter';
 import { FirebaseModule } from './lib/firebase/firebase.module';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
     imports: [
@@ -23,13 +22,6 @@ import { FirebaseModule } from './lib/firebase/firebase.module';
             useFactory: () => ({
                 timeout: 5000,
                 maxRedirects: 5
-            })
-        }),
-        JwtModule.registerAsync({
-            imports: [ConfigModule],
-            inject: [ConfigService],
-            useFactory: (configService: ConfigService) => ({
-                ...JwtConfig(configService)
             })
         }),
         DatabaseModule,
