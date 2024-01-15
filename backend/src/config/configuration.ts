@@ -19,8 +19,18 @@ export default () => ({
         secret: process.env.JWT_SECRET
     },
     firebase: {
-        type: process.env.FIREBASE_TYPE || 'service_account',
         projectId: process.env.FIREBASE_PROJECT_ID,
+
+        // app
+        appId: process.env.FIREBASE_APP_ID,
+        apiKey: process.env.FIREBASE_API_KEY,
+        apiId: process.env.FIREBASE_API_ID,
+        authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+        storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
+        senderId: process.env.FIREBASE_SENDER_ID,
+
+        // admin
+        type: process.env.FIREBASE_TYPE || 'service_account',
         clientId: process.env.FIREBASE_CLIENT_ID,
         clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
         privateKeyId: process.env.FIREBASE_PRIVATE_KEY_ID,
