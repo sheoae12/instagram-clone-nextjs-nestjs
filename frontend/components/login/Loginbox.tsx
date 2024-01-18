@@ -12,19 +12,6 @@ export default function LoginBox(): React.ReactNode {
         e.preventDefault()
 
         try {
-            // const res = await fetch('/api/signin', {
-            //     method: 'POST',
-            //     headers: {
-            //         'Content-Type': 'application/json'
-            //     },
-            //     body: JSON.stringify({ account, password })
-            // })
-
-            // if (res.ok) {
-            //     console.log('signin ok')
-            // } else {
-            //     console.log('sigin failed')
-            // }
             const res = await signIn('credentials', { account, password })
 
             if (res && res.error) {
@@ -52,6 +39,7 @@ export default function LoginBox(): React.ReactNode {
                 <div className={styles.login_input_wrapper}>
                     <input 
                         className={styles.login_input} 
+                        type='password'
                         placeholder='비밀번호'
                         onChange={e => setPassword(e.target.value)}
                     >

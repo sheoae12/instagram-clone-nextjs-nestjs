@@ -27,10 +27,13 @@ export default async function RootLayout({
     <html>
       <body>
         {session?.user ? (
+          <>
           <div className='wrapper'>     
             <SideBar />
             <div className='remain_space'>{children}</div>
           </div>
+          <div id="portal"></div>
+          </>
         ) : <Login />}
       </body>
     </html>
