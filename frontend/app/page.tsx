@@ -8,6 +8,16 @@ async function fetchFeedData() {
   return await res.json();
 }
 
+type FeedData = {
+  id: number;
+  username: string;
+  createdAt: string;
+  image: string;
+  desc:  string;
+  likes: number;
+  totalComments: number;
+}
+
 export default async function Home() {
   const feeds = await fetchFeedData();
   
@@ -15,7 +25,7 @@ export default async function Home() {
     <div className="feed_layout">
       <StoryBar />
       <div className="feed_container">
-        {feeds.map((data) => {
+        {feeds.map((data: FeedData) => {
           return (
             <Feed key={data.id} props={data}/>
           )

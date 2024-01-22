@@ -1,6 +1,6 @@
 'use client'
 
-import React, { ChangeEvent, useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import styles from './CreateFeedModal.module.css'
 import { CommentStatus } from '@/constants/status'
 import ToggleSwitch from '@/common/switch/ToggleSwitch'
@@ -25,7 +25,7 @@ export default function CreateFeedModal({ file, onFirstModalClose, onSecondModal
         updateFeedEditWrapperHeight()
     }, [file])
 
-    const handleCaptionChange = (e) => {
+    const handleCaptionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         e.preventDefault()
         if (e.target.value.length <= MAX_CAPTION_LENGTH) {
             setCaption(e.target.value)
@@ -41,12 +41,14 @@ export default function CreateFeedModal({ file, onFirstModalClose, onSecondModal
         }
     }
 
-    const handleGoBack = (e) => {
+    const handleGoBack = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
         onSecondModalClose()
     }
 
     // 배경 클릭시 모달 닫기
-    const handleBackgroundClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    const handleBackgroundClick = (
+        e: React.MouseEvent<HTMLDivElement>
+    ) => {
         e.stopPropagation()    // 클릭 이벤트가 모달 내부로 전파되지 않도록       
         if (e.target === e.currentTarget) {
             onFirstModalClose()
