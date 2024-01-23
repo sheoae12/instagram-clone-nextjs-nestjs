@@ -1,0 +1,35 @@
+version: '3'
+services:
+  postgres:
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: instagram_clone
+    container_name: insta-clone-postgres
+
+  redis:
+    image: "redis:latest"
+    ports:
+      - "6379:6379"
+    container_name: insta-clone-redis
+
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "3000:3000"
+    container_name: insta-clone-frontend
+
+  backend:
+    build:
+      context: ./backend
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    container_name: insta-clone-backend
+
+  
