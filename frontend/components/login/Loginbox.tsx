@@ -3,24 +3,23 @@
 import { FormEvent, useState } from 'react'
 import styles from './Login.module.css'
 import { SignInResponse, signIn } from 'next-auth/react'
+import { usePathname, useRouter } from 'next/navigation';
 
 export default function LoginBox(): React.ReactNode {
     const [account, setAccount] = useState('')
     const [password, setPassword] = useState('')
+    const router = useRouter()
 
     const submit = async (e: FormEvent) => {
         e.preventDefault()
 
         try {
-            const res = await signIn('credentials', { account, password })
+            const res = await signIn('credentials', { account, password, callbackUrl: '/feed' })
 
-            if (res && res.error) {
-                alert('error')
-                return
-            }
+            await router.push('/feed')
         } catch (error) {
             console.log('error ', error)
-        }
+        }  
     }
 
     return (
@@ -48,10 +47,6 @@ export default function LoginBox(): React.ReactNode {
 
                 <button className={styles.login_button}>로그인</button>
             </form>
-
-            <div>
-
-            </div>
         </div>
     )
 }
