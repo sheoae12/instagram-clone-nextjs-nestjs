@@ -5,6 +5,7 @@ import SideBar from '@/components/sidebar/sidebar';
 import { getServerSession } from 'next-auth';
 import { options } from '../api/auth/[...nextauth]/option'
 import { redirect } from "next/navigation"
+import { UserSessionInfo } from '@/common/types/user.type';
 
 async function fetchFeedData() {
     const res = await fetch(process.env.API_URL+'/api/feed');
@@ -33,10 +34,10 @@ export default async function Page() {
     return (
         <>
             <div className='wrapper'>     
-                <SideBar />
+                <SideBar props={session.user as UserSessionInfo}/>
                 <div className='remain_space'>
                     <div className="feed_layout">
-                        <StoryBar />
+                        <StoryBar/>
                         <div className="feed_container">
                             {feeds.map((data: FeedData) => {
                                 return (
