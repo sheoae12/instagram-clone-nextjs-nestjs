@@ -28,7 +28,7 @@ export const getAdminAuth = (configService: ConfigService) => {
     return getAuth(app);
 }
 
-export const getFirebaseAppAuth = (configService: ConfigService) => {
+export const getFirebaseApp = (configService: ConfigService) => {
     const firebaseConfig = {
         apiKey: configService.get<string>('firebase.apiKey'),
         authDomain: configService.get<string>('firebase.authDomain'),
@@ -38,7 +38,7 @@ export const getFirebaseAppAuth = (configService: ConfigService) => {
         appId: configService.get<string>('firebase.appId')
     };
 
-    const app = initializeApp(firebaseConfig);
+    return initializeApp(firebaseConfig);
 
-    return getAppAuth(app);
+    //return getAppAuth(app);
 }

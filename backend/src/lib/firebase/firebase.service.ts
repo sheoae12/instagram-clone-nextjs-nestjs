@@ -2,8 +2,10 @@ import { ConflictException, Injectable, InternalServerErrorException, Logger, Un
 import { ConfigService } from "@nestjs/config";
 import { Auth as AdminAuth, UserRecord } from "firebase-admin/auth";
 import { FirebaseApp } from "firebase/app";
-import { getAdminAuth, getFirebaseAppAuth } from "src/config/firebase.config";
+import { getAdminAuth, getFirebaseApp } from "src/config/firebase.config";
 import { Auth, UserCredential, getAuth, signInWithEmailAndPassword, signInWithPhoneNumber  } from "firebase/auth";
+import { FirebaseStorage, getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
+import { getUnixTime } from "src/common/util/date";
 
 export interface FirebaseUser {
     email?: string,
@@ -17,11 +19,13 @@ export class FirebaseService {
     app: Auth;
     admin: AdminAuth;
     logger: Logger;
+    storage: FirebaseStorage;
 
     constructor(private configService: ConfigService) {
         this.admin = getAdminAuth(configService);
-        this.app = getFirebaseAppAuth(configService);
+        this.app = getAuth(getFirebaseApp(configService));
         this.logger = new Logger(FirebaseService.name);
+        this.storage = getStorage(getFirebaseApp(configService));
     }
 
     async createUser(user: FirebaseUser): Promise<UserRecord> {
@@ -80,5 +84,28 @@ export class FirebaseService {
             this.logger.error(`[checkUserByPhoneNumber] Failed to find firebase user: ${phoneNumber}`);
             throw new InternalServerErrorException(`firebase error: find user`);
         }
+    }
+
+    async uploadImageFile(file: Express.Multer.File) {
+        this.logger.debug(`upload image file to firebase storage`);
+        this.logger.debug(`${file.filename}`)
+
+        const filename = `${getUnixTime()}_${encodeURI(file.originalname)}`;
+
+        const storageRef = ref(this.storage, filename);
+        const metadata = { contentType: file.mimetype };
+
+        try {
+            await uploadBytes(storageRef, file.buffer, metadata);
+            const downloadURL = await getDownloadURL(storageRef);
+
+            return { url: downloadURL };
+        } catch (error) {
+            console.error(error);
+            this.logger.error(`${error}`)
+            this.logger.error(`[uploadImageFile] Failed to upload firebase storage: ${file.filename}`);
+            throw new InternalServerErrorException(`firebase error: upload file`);
+        }
+
     }
 }
