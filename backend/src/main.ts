@@ -16,6 +16,8 @@ async function bootstrap() {
     app.useGlobalPipes(new ValidationPipe());
     app.use(cookieParser());
 
+    app.enableCors();
+
     const configService = app.get(ConfigService);
     const port = configService.get<number>('app.port', 8080);
 
