@@ -6,6 +6,7 @@ import { FirebaseModule } from 'src/lib/firebase/firebase.module';
 import { JwtModule, JwtService } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtConfig } from 'src/config/jwt.config';
+import { ProfileRepository } from 'src/repositories/profile.repository';
 
 @Module({
     imports: [
@@ -19,6 +20,6 @@ import { JwtConfig } from 'src/config/jwt.config';
         }),
     ],
     controllers: [AuthController],
-    providers: [AuthService, UserRepository]
+    providers: [AuthService, UserRepository, ProfileRepository]
 })
 export class AuthModule {}

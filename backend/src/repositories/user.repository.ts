@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { getCurrentDate } from "src/common/util/date";
 import { User } from "src/entities/userinfo/user.entity";
 import { DataSource, Repository } from "typeorm";
@@ -17,6 +17,16 @@ export class UserRepository extends Repository<User> {
         super(User, dataSource.createEntityManager());
     }
 
+    async findById(uid: string): Promise<number> {
+        const user = await this.findOneBy({ uid });
+
+        if (!user) {
+            throw new NotFoundException(`user id not found: ${uid}`);
+        }
+
+        return user.id;
+    }
+
     checkUserExist(condition: string): Promise<User|null> {
         return this.createQueryBuilder()
             .select(['user.account'])
@@ -27,7 +37,7 @@ export class UserRepository extends Repository<User> {
     }
 
     createUser(data: User): Promise<User> {
-        data.userId = uuidv4();
+        data.uid = uuidv4();
         return this.save(data);
         // return this.createQueryBuilder()
         //     .insert()
@@ -43,11 +53,17 @@ export class UserRepository extends Repository<User> {
         //     .execute();
     }
 
-    getUserInfoByAccount(account: string) {
+    getUserInfo(target: string) {
         return this.createQueryBuilder()
-            .select(['user.account', 'user.userId', 'user.name', 'user.nickname'])
+            .select([
+                'user.account AS account', 
+                'user.uid AS uid', 
+                'user.name AS name', 
+                'user.nickname AS nickname',
+                'user.profileImg AS profileImg'
+            ])
             .from(User, 'user')
-            .where('user.account = :account', { account })
-            .getOne();
+            .where('user.account = :account', { account: target })
+            .getRawOne();
     }
 }

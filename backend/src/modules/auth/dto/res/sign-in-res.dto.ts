@@ -1,15 +1,15 @@
 import { Exclude } from "class-transformer";
 
 export class SignInResponse {
-    userId: string;
+    uid: string;
     name: string;
     nickname: string;
-    token: string;
+    accessToken: string;
 
     constructor(data: any) {
-        this.userId = data.userInfo.userId;
+        this.uid = data.userInfo.uid;
         this.name = data.userInfo.name;
         this.nickname = data.userInfo.nickname;
-        this.token = data.token;
+        this.accessToken = data.accessToken;
     }
 }

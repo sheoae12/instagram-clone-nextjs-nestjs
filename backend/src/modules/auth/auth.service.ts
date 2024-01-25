@@ -9,6 +9,7 @@ import { isEmail } from "src/common/util/regex";
 import { genRandomId } from "src/common/util/auth";
 import { User } from "src/entities/userinfo/user.entity";
 import { JwtService } from "@nestjs/jwt";
+import { ProfileRepository } from "src/repositories/profile.repository";
 
 @Injectable()
 export class AuthService {
@@ -17,7 +18,8 @@ export class AuthService {
     constructor(
         private readonly userRepository: UserRepository,
         private readonly firebaseService: FirebaseService,
-        private readonly jwtService: JwtService
+        private readonly jwtService: JwtService,
+        private readonly profileRepository: ProfileRepository
     ) {}
 
     async signIn(payload: SignInDto) {
@@ -33,9 +35,11 @@ export class AuthService {
             payload.password
         );
 
-        const userInfo = await this.userRepository.getUserInfoByAccount(userCredential.user.email as string);
+        const userInfo = await this.userRepository.getUserInfo(userCredential.user.email as string);
         const accessToken = this.jwtService.sign({ ...userInfo });
         const refreshToken = this.jwtService.sign({ auth: accessToken });
+
+        this.logger.debug(`token ${accessToken}`)
 
         return { userInfo, accessToken, refreshToken };
     }
