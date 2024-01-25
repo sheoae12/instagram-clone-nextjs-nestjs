@@ -10,7 +10,8 @@ import { AuthModule } from './modules/auth/auth.module';
 import { APP_FILTER } from '@nestjs/core';
 import { HttpExceptionFilter } from './common/exception-filters/http-exception.filter';
 import { FirebaseModule } from './lib/firebase/firebase.module';
-import { JwtModule } from '@nestjs/jwt';
+import { FeedModule } from './modules/feed/feed.module';
+import { UserModule } from './modules/user/user.module';
 
 @Module({
     imports: [
@@ -27,7 +28,9 @@ import { JwtModule } from '@nestjs/jwt';
         DatabaseModule,
         RedisModule,
         AuthModule,
-        FirebaseModule
+        FirebaseModule,
+        FeedModule,
+        UserModule
     ],
     controllers: [AppController],
     providers: [
