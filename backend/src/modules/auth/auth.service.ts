@@ -34,10 +34,10 @@ export class AuthService {
         );
 
         const userInfo = await this.userRepository.getUserInfoByAccount(userCredential.user.email as string);
-        const token = this.jwtService.sign({ ...userInfo });
-        const refreshToken = this.jwtService.sign({ auth: token });
+        const accessToken = this.jwtService.sign({ ...userInfo });
+        const refreshToken = this.jwtService.sign({ auth: accessToken });
 
-        return { userInfo, token, refreshToken };
+        return { userInfo, accessToken, refreshToken };
     }
 
     async facebookSignIn(payload: any) {}
