@@ -16,8 +16,24 @@ export default function Signup(): React.ReactNode {
         router.push('/login')
     }
 
-    const submit = async (e: FormEvent) => {
+    const onSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
+
+        const res = await fetch('/api/signup', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({ account, password, name, nickname })
+		})
+
+        if (res && res.ok) {
+            console.log('signup success')
+            console.log('signup result (json)', res.json)
+            router.push('/login')
+        } else {
+            console.log('signup failed')
+        }
     }
 
     return (
@@ -28,7 +44,7 @@ export default function Signup(): React.ReactNode {
                     
                     <div className={styles.signup_intro}>친구들의 사진과 동영상을 보려면 가입하세요.</div>
 
-                    <form onSubmit={e => submit(e)}>
+                    <form onSubmit={onSubmit}>
                         <div className={styles.signup_input_wrapper}>
                             <input 
                                 className={styles.signup_input} 
@@ -65,7 +81,7 @@ export default function Signup(): React.ReactNode {
 
                         <div className={styles.signup_desc}>저희 서비스를 이용하는 사람이 회원님의 연락처 정보를 Instagram에 업로드했을 수도 있습니다. </div>
 
-                        <button className={styles.signup_button}>가입</button>
+                        <button className={styles.signup_button} onClick={onSubmit}>가입</button>
                     </form>
                 </div>
 

@@ -8,7 +8,13 @@ import { signOut } from "next-auth/react";
 import { createPortal } from "react-dom";
 import UploadModal from "../modal/feed/UploadModal";
 
-export default function SideBar(): React.ReactNode {
+type UserSession = {
+    props: {
+        account: string;
+    }
+}
+
+export default function SideBar({ props }: UserSession): React.ReactNode {
     const [feedModal, setFeedModal] = useState(false)
     const [portalElement, setPortalElement] = useState<Element | null>(null);
     

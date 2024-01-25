@@ -16,7 +16,7 @@ export default function LoginBox(): React.ReactNode {
         try {
             const res = await signIn('credentials', { account, password, callbackUrl: '/feed' })
 
-            await router.push('/feed')
+            router.push('/feed')
         } catch (error) {
             console.log('error ', error)
         }  
