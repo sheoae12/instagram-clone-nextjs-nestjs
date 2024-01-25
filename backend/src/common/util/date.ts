@@ -22,3 +22,7 @@ export function getFormattedDate(date: Date): string {
     const formattedDate = `${year}-${month}-${day} ${hour}:${minute}:${sec}`;
     return formattedDate;
 }
+
+export function getUnixTime(): number {
+    return Math.floor(getCurrentDate().getTime() / 1000);
+}
