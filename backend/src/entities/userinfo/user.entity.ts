@@ -3,7 +3,8 @@ import {
     PrimaryGeneratedColumn,
     Column,
     DeleteDateColumn,
-    OneToMany
+    OneToMany,
+    OneToOne
 } from 'typeorm';
 import { Feed } from '../feed/feed.entity';
 import { FeedResourceGroup } from '../feed/feed-resource-group.entity';
@@ -20,8 +21,8 @@ export class User {
     @PrimaryGeneratedColumn({ name: 'id', type: 'int' })
     id: number;
 
-    @Column({ name: 'user_id', type: 'uuid', unique: true })
-    userId: string;
+    @Column({ name: 'uid', type: 'uuid', unique: true })
+    uid: string;
 
     @Column({ name: 'firebase_uid', type: 'varchar', length: 128 })
     firebaseUid: string;
@@ -37,6 +38,9 @@ export class User {
 
     @Column({ name: 'nickname', type: 'varchar', length: 15, comment: '유저이름' })
     nickname: string;
+
+    @Column({ name: 'profileImg', type: 'varchar', length: 255, nullable: true })
+    profileImg: string;
 
     @Column({ name: 'created_at', type: 'timestamp' })
     createdAt: Date = getCurrentDate();
@@ -54,23 +58,23 @@ export class User {
         () => FeedResourceGroup,
         (feedResourceGroup) => feedResourceGroup.user
     )
-    feedResourceGroup: FeedResourceGroup;
+    feedResourceGroup: FeedResourceGroup[];
 
-    @OneToMany(() => Profile, (profile) => profile.user)
+    @OneToOne(() => Profile, (profile) => profile.user)
     profile: Profile;
 
     @OneToMany(() => Bookmark, (bookmark) => bookmark.user)
-    bookmark: Bookmark;
+    bookmark: Bookmark[];
 
     @OneToMany(() => BookmarkGroup, (bookmarkGroup) => bookmarkGroup.user)
-    bookmarkGroup: BookmarkGroup;
+    bookmarkGroup: BookmarkGroup[];
 
     @OneToMany(() => LoginHistory, (loginHistory) => loginHistory.user)
-    loginHistory: LoginHistory;
+    loginHistory: LoginHistory[];
 
     @OneToMany(() => Like, (like) => like.user)
-    like: Like;
+    like: Like[];
 
     @OneToMany(() => Comment, (comment) => comment.user)
-    comment: Comment;
+    comment: Comment[];
 }

@@ -11,6 +11,7 @@ import { FeedResourceGroup } from './feed-resource-group.entity';
 import { FeedLike } from './feed-like.entity';
 import { FeedComment } from './feed-comment.entity';
 import { getCurrentDate } from 'src/common/util/date';
+import { Resource } from '../resource/resource.entity';
 
 @Entity({ name: 'feed' })
 export class Feed {
@@ -38,11 +39,19 @@ export class Feed {
         () => FeedResourceGroup,
         (feedResourceGrouop) => feedResourceGrouop.feed
     )
-    feedResourceGroup: FeedResourceGroup;
+    feedResourceGroup: FeedResourceGroup[];
 
     @OneToMany(() => FeedLike, (feedLike) => feedLike.feed)
-    like: FeedLike;
+    like: FeedLike[];
 
     @OneToMany(() => FeedComment, (feedComment) => feedComment.feed)
-    comment: FeedComment;
+    comment: FeedComment[];
+
+    @ManyToOne(() => Resource, (resource) => resource.feed, {
+        cascade: true
+    })
+    @JoinColumn({ name: 'resource_id', referencedColumnName: 'id' })
+    resource: Resource;
+    @Column({ name: 'resource_id', type: 'int' })
+    resourceId: number;
 }

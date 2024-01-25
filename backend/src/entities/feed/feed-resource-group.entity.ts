@@ -7,6 +7,7 @@ import {
 } from 'typeorm';
 import { User } from '../userinfo/user.entity';
 import { Feed } from './feed.entity';
+import { Resource } from '../resource/resource.entity';
 
 @Entity({ name: 'feed_resource_group' })
 export class FeedResourceGroup {

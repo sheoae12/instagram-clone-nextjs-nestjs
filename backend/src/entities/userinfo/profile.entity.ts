@@ -6,6 +6,7 @@ import {
     PrimaryGeneratedColumn
 } from 'typeorm';
 import { User } from './user.entity';
+import { getCurrentDate } from 'src/common/util/date';
 
 @Entity({ name: 'profile' })
 export class Profile {
