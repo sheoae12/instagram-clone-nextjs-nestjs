@@ -19,4 +19,5 @@ COPY .env.local .
 RUN pnpm run build
 
 # 앱을 실행합니다.
-CMD ["pnpm", "start"]
+#CMD ["pnpm", "start"]
+CMD ["pnpm", "dev"]
