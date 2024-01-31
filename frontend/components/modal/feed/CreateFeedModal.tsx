@@ -4,19 +4,22 @@ import React, { useEffect, useRef, useState } from 'react'
 import styles from './CreateFeedModal.module.css'
 import { CommentStatus } from '@/constants/status'
 import ToggleSwitch from '@/common/switch/ToggleSwitch'
+import { UserSessionInfo } from '@/common/types/user.type'
 
 const MAX_CAPTION_LENGTH = 2200
 
-export default function CreateFeedModal({ file, onFirstModalClose, onSecondModalClose }: { 
+export default function CreateFeedModal({ user, file, onFirstModalClose, onSecondModalClose }: { 
+    user: UserSessionInfo,
     file: File,
     onFirstModalClose: () => void,
     onSecondModalClose: () => void 
-}): React.ReactNode {
+}) {
     const [imageSrc, setImageSrc] = useState('')
     const [caption, setCaption] = useState('')
     const [captionLength, setCaptionLength] = useState(0)
     const [notShowLikeView, setNotShowLikeView] = useState<boolean>(false)
     const [disableComment, setDisableComment] = useState<boolean>(false)
+    const profileImg = user.profileImg ?? '/icons/default_profile.svg'
 
     const feedEditWrapperRef = useRef<HTMLDivElement>(null)
 
@@ -76,20 +79,39 @@ export default function CreateFeedModal({ file, onFirstModalClose, onSecondModal
         return modalWrapper ? modalWrapper.clientHeight : 0
     }
 
+    const publishFeed = (e: React.MouseEvent) => {
+        // e.preventDefault()
+
+        const formData = new FormData()
+        formData.append('file', file)
+        formData.append('uid', user.uid)
+        formData.append('caption', caption)
+
+        fetch(`/api/feed`, {
+            method: 'POST',
+            body: formData
+        }).then((res) => {
+            onFirstModalClose()
+            onSecondModalClose()
+        }).catch((err) => {
+            console.error(err)
+        })
+    }
+
     return (
         <div className={styles.modal_background} onClick={handleBackgroundClick}>
             <div className={styles.modal_wrapper}>
                 <div className={styles.modal_header}>
                     <div className={styles.back_button} onClick={handleGoBack}>←</div>
                     <div>새 게시물 만들기</div>
-                    <div className={styles.share_button}>공유하기</div>
+                    <div className={styles.share_button} onClick={publishFeed}>공유하기</div>
                 </div>
                 <div className={styles.feed_edit_wrapper} ref={feedEditWrapperRef}>
                     <img className={styles.feed_edit_img} src={imageSrc} />
                     <div className={styles.feed_right}>
                         <div className={styles.feed_profile}>
-                            <img src='/icons/default_profile.svg'/>
-                            <div>instagram_user</div>
+                            <img src={profileImg}/>
+                            <div>{user.nickname}</div>
                         </div>
                         <div className={styles.feed_input_container}>
                             <textarea

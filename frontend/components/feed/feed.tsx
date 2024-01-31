@@ -6,34 +6,36 @@ import React from "react";
 
 type FeedData = ({
     props: {
-        username: string,
-        createdAt: string,
-        image: string,
-        desc: string
+        profileimg: string,
+        nickname: string,
+        createdat: string,
+        url: string,
+        caption: string
         likes: number,
         totalComments: number
     }
 })
 
 export default function Feed({ props }: FeedData): React.ReactNode {
-    const username = props.username
-    const createdAt = props.createdAt
+    const profileImg = props.profileimg
+    const nickname = props.nickname
+    const createdAt = props.createdat
     const likes = props.likes
-    //const feed_desc = '외롭지만 그래도 혼자있고픈 사람들 모여라~!\n혼자 있는 걸 좋아하는 친구 모두 @태그 하기🙌\n여러분들은 이럴 때에는 무조건 혼자있고싶다! 한 적이 있나요?\n생각나는 에피소드가 있다면 댓글을 통해 공유해주세요💁‍♀️'
-    const feed_desc = props.desc
+    const url = props.url
+    const caption = props.caption
     const totalComments = props.totalComments
 
     return (
         <div className={styles.feed_box}>
             <div className={styles.feed_top}>
                 <div className={styles.feed_profile}>
-                    <img className={styles.feed_profile_img} src='/sample-images/story_profile_sample.png'/>
+                    <img className={styles.feed_profile_img} src={profileImg}/>
                 </div>
-                <div className={styles.feed_bold_text}>{username}</div>
+                <div className={styles.feed_bold_text}>{nickname}</div>
                 <div className={styles.feed_time}>• {createdAt}</div>
             </div>
             <div className={styles.feed_content}>
-                <img className={styles.feed_img} src='/sample-images/sample_img01.jpeg'/>
+                <img className={styles.feed_img} src={url}/>
             </div>
             <div className={styles.feed_util}>
                 <div className={styles.feed_left_buttons}>
@@ -66,8 +68,8 @@ export default function Feed({ props }: FeedData): React.ReactNode {
             <div className={styles.feed_bold_text}>좋아요 {likes}개</div>
             <div className={styles.feed_description}>
                 <span>
-                    <span className={styles.feed_bold_text} style={{marginRight: '10px'}}>{username}</span>
-                    {feed_desc}
+                    <span className={styles.feed_bold_text} style={{marginRight: '10px'}}>{nickname}</span>
+                    {caption}
                 </span>
             </div>
             <div className={styles.feed_comment}>

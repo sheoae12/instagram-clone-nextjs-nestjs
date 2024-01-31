@@ -4,10 +4,12 @@ import React, { ChangeEvent, useState } from 'react'
 import styles from './UploadModal.module.css'
 import { createPortal } from 'react-dom'
 import CreateFeedModal from './CreateFeedModal'
+import { UserSessionInfo } from '@/common/types/user.type'
 
-export default function UploadModal({ onClose }: { 
+export default function UploadModal({ user, onClose }: { 
+    user: UserSessionInfo,
     onClose: () => void 
-}): React.ReactNode {
+}) {
     const fileInput = React.useRef<HTMLInputElement | null>(null)
     const [file, setFile] = useState({});
     const [showSecondModal, setShowSecondModal] = useState(false);
@@ -58,6 +60,7 @@ export default function UploadModal({ onClose }: {
             </div>
             {showSecondModal && createPortal(
                 <CreateFeedModal 
+                    user={user}
                     file={file as File} 
                     onFirstModalClose={onClose}
                     onSecondModalClose={closeSecondModal} 

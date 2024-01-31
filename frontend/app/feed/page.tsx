@@ -7,29 +7,31 @@ import { options } from '../api/auth/[...nextauth]/option'
 import { redirect } from "next/navigation"
 import { UserSessionInfo } from '@/common/types/user.type';
 
-async function fetchFeedData() {
-    const res = await fetch(process.env.API_URL+'/api/feed');
+async function fetchFeedData(uid?: string) {
+    const res = await fetch(process.env.API_URL+`/api/feed?uid=${uid}`);
     return await res.json();
 }
 
 type FeedData = {
     id: number;
-    username: string;
-    createdAt: string;
-    image: string;
-    desc:  string;
+    profileimg: string;
+    nickname: string;
+    createdat: string;
+    url: string;
+    caption:  string;
     likes: number;
     totalComments: number;
 }
 
 export default async function Page() {
-    const session = await getServerSession(options);
+    const session = await getServerSession(options)
+    const user = session?.user as UserSessionInfo
 
     if (!session?.user) {
         redirect('/login')
     }
 
-    const feeds = await fetchFeedData()
+    const feeds = await fetchFeedData(user.uid)
 
     return (
         <>
@@ -39,7 +41,7 @@ export default async function Page() {
                     <div className="feed_layout">
                         <StoryBar/>
                         <div className="feed_container">
-                            {feeds.map((data: FeedData) => {
+                            {feeds?.length > 0 && feeds.map((data: FeedData) => {
                                 return (
                                     <Feed key={data.id} props={data}/>
                                 )
@@ -48,6 +50,7 @@ export default async function Page() {
                     </div>
                 </div>
             </div>
+            <div id="portal"></div>
         </>
     )
 }
