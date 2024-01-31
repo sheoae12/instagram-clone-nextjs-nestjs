@@ -12,6 +12,7 @@ import { FeedLike } from './feed-like.entity';
 import { FeedComment } from './feed-comment.entity';
 import { getCurrentDate } from 'src/common/util/date';
 import { Resource } from '../resource/resource.entity';
+import { Bookmark } from '../bookmark/bookmark.entity';
 
 @Entity({ name: 'feed' })
 export class Feed {
@@ -43,6 +44,9 @@ export class Feed {
 
     @OneToMany(() => FeedLike, (feedLike) => feedLike.feed)
     like: FeedLike[];
+
+    @OneToMany(() => Bookmark, (bookmark) => bookmark.feed)
+    bookmark: Bookmark[];
 
     @OneToMany(() => FeedComment, (feedComment) => feedComment.feed)
     comment: FeedComment[];

@@ -39,7 +39,7 @@ export class User {
     @Column({ name: 'nickname', type: 'varchar', length: 15, comment: '유저이름' })
     nickname: string;
 
-    @Column({ name: 'profileImg', type: 'varchar', length: 255, nullable: true })
+    @Column({ name: 'profile_img', type: 'varchar', length: 255, nullable: true })
     profileImg: string;
 
     @Column({ name: 'created_at', type: 'timestamp' })

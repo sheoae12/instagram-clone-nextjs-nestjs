@@ -8,6 +8,7 @@ import {
 import { BookmarkGroup } from './bookmark-group.entity';
 import { User } from '../userinfo/user.entity';
 import { getCurrentDate } from 'src/common/util/date';
+import { Feed } from '../feed/feed.entity';
 
 @Entity({ name: 'bookmark' })
 export class Bookmark {
@@ -29,6 +30,14 @@ export class Bookmark {
     user: User;
     @Column({ name: 'user_id', type: 'int' })
     userId: number;
+
+    @ManyToOne(() => Feed, (feed) => feed.bookmark, {
+        cascade: true
+    })
+    @JoinColumn({ name: 'feed_id', referencedColumnName: 'id' })
+    feed: Feed;
+    @Column({ name: 'feed_id', type: 'int' })
+    feedId: number;
 
     @Column({ name: 'created_at', type: 'timestamp' })
     createdAt: Date = getCurrentDate();

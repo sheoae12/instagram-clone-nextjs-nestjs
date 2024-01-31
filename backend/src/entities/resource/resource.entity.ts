@@ -12,7 +12,7 @@ export class Resource {
     @Column({ name: 'type', type: 'varchar', length: 10 })
     type: string;
 
-    @Column({ name: 'url', type: 'varchar', length: 255 })
+    @Column({ name: 'url', type: 'varchar', length: 500 })
     url: string;
 
     @Column({ name: 'created_at', type: 'timestamp' })
