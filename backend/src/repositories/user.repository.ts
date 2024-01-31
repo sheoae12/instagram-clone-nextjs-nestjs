@@ -27,6 +27,16 @@ export class UserRepository extends Repository<User> {
         return user.id;
     }
 
+    async getProfileImg(uid: string): Promise<string> {
+        const user = await this.findOneBy({ uid });
+
+        if (!user) {
+            throw new NotFoundException(`user id not found: ${uid}`);
+        }
+
+        return user.profileImg;
+    }
+
     checkUserExist(condition: string): Promise<User|null> {
         return this.createQueryBuilder()
             .select(['user.account'])
@@ -60,7 +70,7 @@ export class UserRepository extends Repository<User> {
                 'user.uid AS uid', 
                 'user.name AS name', 
                 'user.nickname AS nickname',
-                'user.profileImg AS profileImg'
+                'user.profileImg AS profileImg' // 이유는 모르겠으나 'profileimg'로 가져와짐
             ])
             .from(User, 'user')
             .where('user.account = :account', { account: target })

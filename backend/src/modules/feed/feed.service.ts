@@ -8,6 +8,8 @@ import { FeedRepository } from "src/repositories/feed.repository";
 import { plainToInstance } from "class-transformer";
 import { Feed } from "src/entities/feed/feed.entity";
 import { UserRepository } from "src/repositories/user.repository";
+import { FeedLikeRepository } from "src/repositories/feed-like.repository";
+import { FeedCommentRepository } from "src/repositories/feed-comment.repository";
 
 @Injectable()
 export class FeedService {
@@ -18,16 +20,27 @@ export class FeedService {
         private readonly firebaseService: FirebaseService,
         private readonly resourceRepository: ResourceRepository,
         private readonly feedRepository: FeedRepository,
-        private readonly userRepository: UserRepository
+        private readonly userRepository: UserRepository,
+        private readonly feedLikeRepsository: FeedLikeRepository,
+        private readonly feedCommentRepository: FeedCommentRepository
     ) {}
 
     async getUserFeed(uid: string) {
         this.logger.debug(`[getUserFeed] get feed by userId ${uid}`);
 
-        const _uid = await this.userRepository.findById(uid);
+        const userId = await this.userRepository.findById(uid);
 
         try {
-            const result = await this.feedRepository.getUserFeeds(_uid);
+            const result = await this.feedRepository.getUserFeeds(userId);
+
+            for (let data of result) {
+                const profileImg = await this.userRepository.getProfileImg(uid);
+                const likes = await this.feedLikeRepsository.count({ where: { feedId: data.id }});
+                const totalComments = await this.feedCommentRepository.count({ where: { feedId: data.id }});
+
+                data = { ...data, profileImg, likes, totalComments };
+            }
+
             return result;
         } catch (error) {
             this.logger.error(error)

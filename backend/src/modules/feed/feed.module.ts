@@ -8,10 +8,19 @@ import { FeedService } from './feed.service';
 import { ResourceRepository } from 'src/repositories/resource.repository';
 import { FeedRepository } from 'src/repositories/feed.repository';
 import { UserRepository } from 'src/repositories/user.repository';
+import { FeedLikeRepository } from 'src/repositories/feed-like.repository';
+import { FeedCommentRepository } from 'src/repositories/feed-comment.repository';
 
 @Module({
     imports: [FirebaseModule],
     controllers: [FeedController],
-    providers: [FeedService, ResourceRepository, FeedRepository, UserRepository]
+    providers: [
+        FeedService, 
+        ResourceRepository, 
+        FeedRepository, 
+        UserRepository,
+        FeedLikeRepository,
+        FeedCommentRepository
+    ]
 })
 export class FeedModule {}
