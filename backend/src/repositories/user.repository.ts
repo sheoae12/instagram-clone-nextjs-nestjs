@@ -34,7 +34,7 @@ export class UserRepository extends Repository<User> {
             throw new NotFoundException(`user id not found: ${uid}`);
         }
 
-        return user.profileImg;
+        return encodeURI(user.profileImg);
     }
 
     checkUserExist(condition: string): Promise<User|null> {

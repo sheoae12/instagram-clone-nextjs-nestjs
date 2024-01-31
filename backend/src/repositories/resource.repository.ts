@@ -12,7 +12,7 @@ export class ResourceRepository extends Repository<Resource> {
 
     createResource (url: string, type: string): Promise<Resource> {
         const resource = this.create();
-        resource.url = decodeURI(url);
+        resource.url = url;
         resource.type = type;
 
         return this.save(resource);

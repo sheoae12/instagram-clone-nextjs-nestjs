@@ -10,6 +10,7 @@ import { FeedRepository } from 'src/repositories/feed.repository';
 import { UserRepository } from 'src/repositories/user.repository';
 import { FeedLikeRepository } from 'src/repositories/feed-like.repository';
 import { FeedCommentRepository } from 'src/repositories/feed-comment.repository';
+import { BookmarkRepository } from 'src/repositories/bookmark.repository';
 
 @Module({
     imports: [FirebaseModule],
@@ -20,7 +21,8 @@ import { FeedCommentRepository } from 'src/repositories/feed-comment.repository'
         FeedRepository, 
         UserRepository,
         FeedLikeRepository,
-        FeedCommentRepository
+        FeedCommentRepository,
+        BookmarkRepository
     ]
 })
 export class FeedModule {}
