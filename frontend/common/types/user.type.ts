@@ -1,3 +1,6 @@
 export type UserSessionInfo = {
-    account: string;
+    uid: string;
+    name: string;
+    nickname: string;
+    profileImg: string;
 }
