@@ -14,8 +14,8 @@ export async function POST(req: Request) {
 			account, password
 		})
 
-        return new Response(JSON.stringify(result.data));
+        return new Response(JSON.stringify(result.data))
 	} catch (error) {
-		return new Response(JSON.stringify(null));
+		return new Response(JSON.stringify(null))
 	}
 }
