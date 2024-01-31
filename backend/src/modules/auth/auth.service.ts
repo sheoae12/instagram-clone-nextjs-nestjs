@@ -39,8 +39,6 @@ export class AuthService {
         const accessToken = this.jwtService.sign({ ...userInfo });
         const refreshToken = this.jwtService.sign({ auth: accessToken });
 
-        this.logger.debug(`token ${accessToken}`)
-
         return { userInfo, accessToken, refreshToken };
     }
 
