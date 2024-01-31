@@ -4,7 +4,7 @@ import { Auth as AdminAuth, UserRecord } from "firebase-admin/auth";
 import { FirebaseApp } from "firebase/app";
 import { getAdminAuth, getFirebaseApp } from "src/config/firebase.config";
 import { Auth, UserCredential, getAuth, signInWithEmailAndPassword, signInWithPhoneNumber  } from "firebase/auth";
-import { FirebaseStorage, getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
+import { FirebaseStorage, StorageReference, deleteObject, getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { getUnixTime } from "src/common/util/date";
 
 export interface FirebaseUser {
@@ -106,6 +106,15 @@ export class FirebaseService {
             this.logger.error(`[uploadImageFile] Failed to upload firebase storage: ${file.filename}`);
             throw new InternalServerErrorException(`firebase error: upload file`);
         }
+    }
 
+    async deleteImageFile(ref: StorageReference) {
+        this.logger.debug(`delete image file from firebase storage`);
+        try {
+            return await deleteObject(ref);
+        } catch (error) {
+            this.logger.error(`[deleteImageFile] Failed to delete from firebase storage: ${ref.name}`)
+            throw new InternalServerErrorException(`firebase error: delete file`);
+        }
     }
 }
