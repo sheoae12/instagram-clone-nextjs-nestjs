@@ -1,8 +1,9 @@
-import { MenuItems } from "@/constants/menuItems";
 import styles from './Feed.module.css';
 import Image from "next/image";
 import Link from 'next/link';
 import React from "react";
+import { FeedProfileImg } from "../profile/ProfileImg";
+import { getTimeAgo } from "@/common/util/date";
 
 type FeedData = ({
     props: {
@@ -17,7 +18,7 @@ type FeedData = ({
 })
 
 export default function Feed({ props }: FeedData): React.ReactNode {
-    const profileImg = props.profileimg
+    const profileImg = props.profileimg ?? '/icons/default_profile.svg'
     const nickname = props.nickname
     const createdAt = props.createdat
     const likes = props.likes
@@ -28,11 +29,9 @@ export default function Feed({ props }: FeedData): React.ReactNode {
     return (
         <div className={styles.feed_box}>
             <div className={styles.feed_top}>
-                <div className={styles.feed_profile}>
-                    <img className={styles.feed_profile_img} src={profileImg}/>
-                </div>
+                <FeedProfileImg url={profileImg} hasStory={true}/>
                 <div className={styles.feed_bold_text}>{nickname}</div>
-                <div className={styles.feed_time}>• {createdAt}</div>
+                <div className={styles.feed_time}>• {getTimeAgo(new Date(createdAt))}</div>
             </div>
             <div className={styles.feed_content}>
                 <img className={styles.feed_img} src={url}/>

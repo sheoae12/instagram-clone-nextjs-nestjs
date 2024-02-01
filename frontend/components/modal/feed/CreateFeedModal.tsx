@@ -91,9 +91,11 @@ export default function CreateFeedModal({ user, file, onFirstModalClose, onSecon
             method: 'POST',
             body: formData
         }).then((res) => {
+            console.log('feed status', res.status)
             onFirstModalClose()
             onSecondModalClose()
         }).catch((err) => {
+            console.log('feed error', err)
             console.error(err)
         })
     }
