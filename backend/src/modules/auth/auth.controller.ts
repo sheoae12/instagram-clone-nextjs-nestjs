@@ -5,6 +5,7 @@ import { ApiBody, ApiOperation, ApiTags } from "@nestjs/swagger";
 import { SignUpDto } from "./dto/req/sign-up.dto";
 import { Response } from "express";
 import { SignInResponse } from "./dto/res/sign-in-res.dto";
+import { getCurrentDate } from "src/common/util/date";
 
 @ApiTags('유저인증 API')
 @Controller('auth')
@@ -21,7 +22,8 @@ export class AuthController {
         response.cookie('rft', result.refreshToken, { 
             httpOnly: true, 
             domain: 'localhost',
-            path: '/'
+            path: '/',
+            expires: new Date(getCurrentDate().getDate() + 1)
         }); 
 
         return new SignInResponse(result);
