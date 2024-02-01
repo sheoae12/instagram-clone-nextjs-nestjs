@@ -1,6 +1,7 @@
 import type { NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import FaceBookProvider from 'next-auth/providers/facebook'
+import { toast } from 'react-toastify'
 
 export const options: NextAuthOptions = {
 	providers: [
@@ -24,12 +25,11 @@ export const options: NextAuthOptions = {
                 const data = await res.json()
 
                 if (res && res.ok) {
-                    console.log('signin ok')
-                } else {
-                    console.log('sigin failed')
+                    return data
+                } else if (res && !res.ok) {
+                    return null
                 }
-
-                return data
+               
             },
         })
     ],
