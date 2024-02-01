@@ -1,9 +1,7 @@
 import type { Metadata } from 'next'
 import './globals.css'
-import SideBar from '@/components/sidebar/sidebar'
-import Login from '@/components/login/Login'
-import { getServerSession } from "next-auth"
-import { options } from './api/auth/[...nextauth]/option'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css';
 
 export const metadata: Metadata = {
   title: 'Instagram Clone',
@@ -21,16 +19,17 @@ export default async function RootLayout({
   return (
     <html>
       <body>
-        {children}
-        {/* {session?.user ? (
-          <>
-            <div className='wrapper'>     
-              <SideBar />
-              <div className='remain_space'>{children}</div>
-            </div>
-            <div id="portal"></div>
-          </>
-        ) : <Login />} */}
+        <ToastContainer position='top-right' theme="dark" />
+          {children}
+          {/* {session?.user ? (
+            <>
+              <div className='wrapper'>     
+                <SideBar />
+                <div className='remain_space'>{children}</div>
+              </div>
+              <div id="portal"></div>
+            </>
+          ) : <Login />} */}
       </body>
     </html>
   )

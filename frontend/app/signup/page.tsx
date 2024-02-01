@@ -4,6 +4,7 @@ import { FormEvent, useState } from 'react'
 import Footer from '../../components/footer/footer'
 import styles from './Signup.module.css'
 import { useRouter } from 'next/navigation'
+import { toast } from 'react-toastify'
 
 export default function Signup(): React.ReactNode {
     const [account, setAccount] = useState('')
@@ -28,11 +29,12 @@ export default function Signup(): React.ReactNode {
 		})
 
         if (res && res.ok) {
-            console.log('signup success')
-            console.log('signup result (json)', res.json)
+            console.log('회원가입 결과', await res.json())
             router.push('/login')
-        } else {
-            console.log('signup failed')
+        } else if (res && !res.ok) {
+            console.log('error:', await res.json())
+            console.log(res.status)
+            toast.error('이미 가입된 계정/닉네임입니다.')
         }
     }
 

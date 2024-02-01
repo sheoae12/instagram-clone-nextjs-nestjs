@@ -4,6 +4,7 @@ import { FormEvent, useState } from 'react'
 import styles from './Login.module.css'
 import { SignInResponse, signIn } from 'next-auth/react'
 import { usePathname, useRouter } from 'next/navigation';
+import { toast } from 'react-toastify';
 
 export default function LoginBox(): React.ReactNode {
     const [account, setAccount] = useState('')
@@ -12,13 +13,17 @@ export default function LoginBox(): React.ReactNode {
 
     const submit = async (e: FormEvent) => {
         e.preventDefault()
-
+        
         try {
             const res = await signIn('credentials', { account, password, callbackUrl: '/feed' })
 
-            router.push('/feed')
+            if (res && res.ok) {
+                router.push('/feed')
+            } else if (res && !res.ok) {
+                toast.error('계정이나 비밀번호를 다시 확인해주세요.')
+            }
         } catch (error) {
-            console.log('error ', error)
+            console.log('login error', error)
         }  
     }
 
