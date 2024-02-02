@@ -6,10 +6,17 @@ import { UserRepository } from 'src/repositories/user.repository';
 import { UserService } from './user.service';
 import { UserController } from './user.controller';
 import { ProfileRepository } from 'src/repositories/profile.repository';
+import { FollowerRepository } from 'src/repositories/follower.repository';
 
 @Module({
     imports: [FirebaseModule],
     controllers: [UserController],
-    providers: [UserService, ResourceRepository, UserRepository, ProfileRepository]
+    providers: [
+        UserService, 
+        ResourceRepository, 
+        UserRepository, 
+        ProfileRepository,
+        FollowerRepository
+    ]
 })
 export class UserModule {}
