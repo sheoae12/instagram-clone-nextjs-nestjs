@@ -12,6 +12,7 @@ import { HttpExceptionFilter } from './common/exception-filters/http-exception.f
 import { FirebaseModule } from './lib/firebase/firebase.module';
 import { FeedModule } from './modules/feed/feed.module';
 import { UserModule } from './modules/user/user.module';
+import { ChatModule } from './modules/chat/chat.module';
 
 @Module({
     imports: [
@@ -30,7 +31,8 @@ import { UserModule } from './modules/user/user.module';
         AuthModule,
         FirebaseModule,
         FeedModule,
-        UserModule
+        UserModule,
+        ChatModule
     ],
     controllers: [AppController],
     providers: [
