@@ -11,7 +11,7 @@ export class FeedRepository extends Repository<Feed> {
         super(Feed, dataSource.createEntityManager());
     }
 
-    getUserFeeds(userId: number) {
+    getUserRelativeFeeds(userId: number) {
         return this.createQueryBuilder('feed')
             .select([
                 'feed.id AS id',
@@ -25,6 +25,27 @@ export class FeedRepository extends Repository<Feed> {
             ])
             .leftJoin('feed.resource', 'resource')
             .leftJoin('feed.user', 'user')
+            .orderBy('feed.id', 'DESC')
+            .getRawMany();
+    }
+
+    getUserFeeds(userId: number, pageNo: number, feedCount: number) {
+        return this.createQueryBuilder('feed')
+            .select([
+                'feed.id AS id',
+                'feed.caption AS caption',
+                'feed.createdAt AS createdAt',
+                'user.uid AS uid',
+                'user.nickname AS nickname',
+                'user.profileImg AS profileImg',
+                'resource.url AS url',
+                'resource.type AS type'
+            ])
+            .leftJoin('feed.resource', 'resource')
+            .leftJoin('feed.user', 'user')
+            .where('feed.userId = :userId', { userId })
+            .limit(feedCount)
+            .offset((pageNo - 1) * feedCount)
             .orderBy('feed.id', 'DESC')
             .getRawMany();
     }

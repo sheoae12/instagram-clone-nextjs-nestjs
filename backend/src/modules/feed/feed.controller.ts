@@ -1,12 +1,16 @@
-import { Body, Controller, Delete, Get, Injectable, Param, ParseIntPipe, Post, Put, Query, UploadedFile, UseInterceptors } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Injectable, Param, ParseIntPipe, Post, Put, Query, UploadedFile, UseGuards, UseInterceptors } from "@nestjs/common";
 import { FeedService } from "./feed.service";
 import { ApiBody, ApiConsumes, ApiOperation, ApiTags } from "@nestjs/swagger";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { CreateFeedDto } from "./dto/req/create-feed.dto";
 import { UpdateFeedDto } from "./dto/req/update-feed.dto";
 import { FeedActionDto } from "./dto/req/feed-action.dto";
+import { RetrieveFeedDto } from "./dto/req/retrieve-feed.dto";
+import { ResponseInterceptor } from "src/common/interceptor/response.interceptor";
+import { UserAuthGuard } from "src/common/guard/user-auth.guard";
 
 @ApiTags('피드 관련 API')
+@UseInterceptors(ResponseInterceptor)
 @Controller('feed')
 export class FeedController {
     constructor(private readonly feedService: FeedService) {}
@@ -22,10 +26,16 @@ export class FeedController {
         return await this.feedService.createFeed(file, payload);
     }
 
-    @ApiOperation({ description: '유저 피드 조회' })
+    @ApiOperation({ description: '전체 피드 조회' })
     @Get()
-    async getUserFeed(@Query('uid') uid: string) {
-        return await this.feedService.getUserFeed(uid);
+    async getAllFeeds(@Query('uid') uid: string) {
+        return await this.feedService.getAllFeeds(uid);
+    }
+
+    @ApiOperation({ description: '유저 피드 조회' })
+    @Get('usr')
+    async getUserFeeds(@Query() payload: RetrieveFeedDto ) {
+        return await this.feedService.getUserFeeds(payload);
     }
 
     @ApiOperation({ description: '피드 삭제' })

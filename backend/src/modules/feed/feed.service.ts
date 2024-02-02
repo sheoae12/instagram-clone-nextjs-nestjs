@@ -13,6 +13,8 @@ import { FeedCommentRepository } from "src/repositories/feed-comment.repository"
 import { UpdateFeedDto } from "./dto/req/update-feed.dto";
 import { FeedActionDto } from "./dto/req/feed-action.dto";
 import { BookmarkRepository } from "src/repositories/bookmark.repository";
+import { RetrieveFeedDto } from "./dto/req/retrieve-feed.dto";
+import { Resource } from "src/entities/resource/resource.entity";
 
 @Injectable()
 export class FeedService {
@@ -29,13 +31,40 @@ export class FeedService {
         private readonly bookmarkRepository: BookmarkRepository
     ) {}
 
-    async getUserFeed(uid: string) {
-        this.logger.debug(`[getUserFeed] get feed by userId ${uid}`);
+    async getAllFeeds(uid: string) {
+        this.logger.debug(`[getAllFeeds] get all feed by userId ${uid}`);
 
         const userId = await this.userRepository.findById(uid);
 
         try {
-            let result = await this.feedRepository.getUserFeeds(userId);
+            let result = await this.feedRepository.getUserRelativeFeeds(userId);
+
+            for (let i = 0; i < result.length; i++) {
+                const data = result[i];
+                const liked = (await this.feedLikeRepsository.findOneBy({ userId, feedId: data.id })) ? true : false;
+                const bookmarked = (await this.bookmarkRepository.findOneBy({ userId, feedId: data.id })) ? true : false;
+                const likes = await this.feedLikeRepsository.count({ where: { feedId: data.id }});
+                const totalComments = await this.feedCommentRepository.count({ where: { feedId: data.id }});
+            
+                result[i] = { ...data, liked, bookmarked, likes, totalComments };
+            }
+            
+            return result;
+        } catch (error) {
+            this.logger.error('[getAllFeeds] all feed retrieve error', error)
+            throw new InternalServerErrorException('all feed retrieve error')
+        }
+    }
+
+    async getUserFeeds(payload: RetrieveFeedDto) {
+        const { uid, pageNo, feedCount } = payload;
+
+        this.logger.debug(`[getUserFeeds] get feed by userId ${uid}`);
+
+        const userId = await this.userRepository.findById(uid);
+
+        try {
+            let result = await this.feedRepository.getUserFeeds(userId, pageNo, feedCount);
 
             for (let i = 0; i < result.length; i++) {
                 const data = result[i];
@@ -50,7 +79,7 @@ export class FeedService {
             return result;
         } catch (error) {
             this.logger.error(error)
-            this.logger.error('[getUserFeed] user feed retrieve error')
+            this.logger.error('[getUserFeeds] user feed retrieve error')
             throw new InternalServerErrorException('user feed retrieve error')
         }
     }
@@ -71,7 +100,7 @@ export class FeedService {
             const result = await this.feedRepository.save(feed);
 
             await queryRunner.commitTransaction();
-            return result;
+            return 'success';
         } catch (error) {
             this.logger.error(error)
             this.logger.error('[createFeed] feed create error');
@@ -112,16 +141,23 @@ export class FeedService {
             throw new NotFoundException(`Feed(id: ${feedId}) not found`);
         }
 
+        const queryRunner = this.dataSource.createQueryRunner();
+        await queryRunner.startTransaction();
+
         try {
             await this.feedRepository.updateFeed(feedId, caption);
+            await queryRunner.commitTransaction();
             return 'success';
         } catch (error) {
             this.logger.error('[updateFeed] feed update error', error);
+            await queryRunner.rollbackTransaction();
             throw new InternalServerErrorException(`update feed error`);
-        } 
+        } finally {
+            await queryRunner.release();
+        }
     }
 
-    async uploadFeedImage(file: Express.Multer.File, payload?: any) {
+    async uploadFeedImage(file: Express.Multer.File, payload?: any): Promise<Resource> {
         this.logger.debug('[uploadFeedImage] Upload to Firebase and Save DB');
 
         const originalType = file.mimetype.split('/')[0];
