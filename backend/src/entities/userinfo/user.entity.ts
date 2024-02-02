@@ -4,7 +4,9 @@ import {
     Column,
     DeleteDateColumn,
     OneToMany,
-    OneToOne
+    OneToOne,
+    ManyToMany,
+    JoinTable
 } from 'typeorm';
 import { Feed } from '../feed/feed.entity';
 import { FeedResourceGroup } from '../feed/feed-resource-group.entity';
@@ -15,6 +17,7 @@ import { getCurrentDate } from 'src/common/util/date';
 import { LoginHistory } from '../history/login-history.entity';
 import { Like } from '../base/like.entity';
 import { Comment } from '../base/comment.entity';
+import { Follower } from './follower.entity';
 
 @Entity({ name: 'user' })
 export class User {
@@ -77,4 +80,10 @@ export class User {
 
     @OneToMany(() => Comment, (comment) => comment.user)
     comment: Comment[];
+
+    @OneToMany(() => Follower, follower => follower.follower)
+    follower: Follower[];
+
+    @OneToMany(() => Follower, follower => follower.following)
+    following: Follower[];
 }
